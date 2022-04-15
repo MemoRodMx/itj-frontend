@@ -9,7 +9,7 @@ import { Container } from "react-bootstrap";
 
 function App() {
   return (
-    <Container fluid className="App">
+    <Container fluid className="App ps-0 pe-0">
       <NavBar />
       <Container className="pt-3 pb-5">
         <Routes>

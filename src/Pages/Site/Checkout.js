@@ -1,30 +1,26 @@
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { Trash } from "react-bootstrap-icons";
-import { useReducer, useState } from "react";
-import {
-  cartReducer,
-  cartInitalState,
-} from "../../Context/Reducers/CartReducer";
-import { Types } from "../../Context/Actions/CartActions";
+import { useState } from "react";
 import Bootbox from "bootbox-react";
 
-const Check = () => {
-  const [state, dispatch] = useReducer(cartReducer, cartInitalState);
+import { connect } from "react-redux";
+import { removeFromCart } from "../../redux/Cart/cart-actions";
+
+const Checkout = ({ items, removeFromCart }) => {
   const [showConfirmRemove, setShowConfirmRemove] = useState(false);
   const [currentItem, setCurrentItem] = useState(false);
 
   const handleYes = () => {
-    console.log("yes");
-    dispatch({ type: Types.REMOVE, payload: currentItem });
+    removeFromCart(currentItem._id);
     setShowConfirmRemove(false);
   };
   const handleNo = () => {
     setShowConfirmRemove(false);
   };
 
-  const total = state.items.length
-    ? state.items.reduce(
+  const total = items?.length
+    ? items.reduce(
         (p, c) => (p += parseFloat(c.price) * parseFloat(c.quantity)),
         0
       )
@@ -47,8 +43,8 @@ const Check = () => {
             </thead>
 
             <tbody>
-              {state.items.length ? (
-                state.items.map((item, index) => (
+              {items?.length ? (
+                items.map((item, index) => (
                   <tr key={index}>
                     <td>
                       <p className="mb-1">{item.name}</p>
@@ -111,4 +107,14 @@ const Check = () => {
   );
 };
 
-export default Check;
+const mapStateToProps = (state) => {
+  return {
+    items: state.cart.items,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return { removeFromCart: (item_id) => dispatch(removeFromCart(item_id)) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
