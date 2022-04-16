@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Checkout from "./Checkout";
-import Items from "./Items";
+import Items from ".items";
 import NotFound from "../NotFound";
 
 const Router = () => (

@@ -6,7 +6,7 @@ const readItems = async (_id) => {
 
     if (_id) query = `/${_id}`;
 
-    const response = await fetch(REACT_APP_BACKEND_URI + `/items${query}`);
+    const response = await fetch(REACT_APP_BACKEND_URI + `items${query}`);
 
     if (response.ok) return await response.json();
     else return [];
@@ -17,7 +17,7 @@ const readItems = async (_id) => {
 
 const createItem = async (body) => {
   try {
-    const response = await fetch(REACT_APP_BACKEND_URI + "/items", {
+    const response = await fetch(REACT_APP_BACKEND_URI + "items", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -35,7 +35,7 @@ const createItem = async (body) => {
 
 const updateItem = async (_id, body) => {
   try {
-    const response = await fetch(REACT_APP_BACKEND_URI + "/items", {
+    const response = await fetch(REACT_APP_BACKEND_URI + "items", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const updateItem = async (_id, body) => {
 
 const removeItem = async (_id) => {
   try {
-    const response = await fetch(REACT_APP_BACKEND_URI + `/items/${_id}}`, {
+    const response = await fetch(REACT_APP_BACKEND_URI + `items/${_id}}`, {
       method: "DELETE",
     });
 

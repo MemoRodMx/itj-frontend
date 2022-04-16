@@ -3,7 +3,7 @@ import { Table, Button, Image, Modal } from "react-bootstrap";
 import { Pencil, Trash } from "react-bootstrap-icons";
 import { LinkContainer } from "react-router-bootstrap";
 
-import itemsApi from "../../Api/items-api";
+import itemsApi from "../../Apiitems-api";
 
 const { REACT_APP_NO_IMAGE } = process.env;
 
@@ -37,7 +37,7 @@ const Items = () => {
     <div>
       <h3>
         Items &nbsp;
-        <LinkContainer to="/admin/items/form">
+        <LinkContainer to="/adminitems/form">
           <Button size="sm" variant="primary">
             Add item
           </Button>
@@ -72,7 +72,7 @@ const Items = () => {
                 <td>{item.price}</td>
                 <td>
                   <LinkContainer
-                    to={`/admin/items/form/${item._id}`}
+                    to={`/adminitems/form/${item._id}`}
                     title="Edit item"
                     className="me-1"
                   >

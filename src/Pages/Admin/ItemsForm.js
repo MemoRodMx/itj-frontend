@@ -4,7 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { SendPlus, X } from "react-bootstrap-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
-import itemsApi from "../../Api/items-api";
+import itemsApi from "../../Apiitems-api";
 
 const ItemsForm = () => {
   let { itemId } = useParams();

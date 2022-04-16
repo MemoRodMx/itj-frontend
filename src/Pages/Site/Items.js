@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Item from "../../Components/Item";
-import itemsApi from "../../Api/items-api";
+import itemsApi from "../../Apiitems-api";
 
 const Items = () => {
   const [itemsList, setItemsList] = useState([]);
