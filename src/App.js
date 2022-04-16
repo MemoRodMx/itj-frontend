@@ -17,7 +17,7 @@ function App() {
           <Route path="/*" element={<SiteRouter />} />
         </Routes>
       </Container>
-      <footer className="p-3">Capstone</footer>
+      <footer className="p-3">ITJ - Fullstack Bootcamp</footer>
     </Container>
   );
 }
