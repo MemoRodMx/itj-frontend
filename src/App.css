@@ -31,6 +31,13 @@
   max-height: 200px;
 }
 
+.toast {
+  top: 5%;
+  margin-left: auto;
+  position: absolute;
+  z-index: 400;
+}
+
 footer {
   position: fixed;
   bottom: 0px;

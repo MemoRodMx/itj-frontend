@@ -3,7 +3,7 @@ import { Table, Button, Image, Modal } from "react-bootstrap";
 import { Pencil, Trash } from "react-bootstrap-icons";
 import { LinkContainer } from "react-router-bootstrap";
 
-import itemsApi from "../../Apiitems-api";
+import itemsApi from "../../Api/items-api";
 
 const { REACT_APP_NO_IMAGE } = process.env;
 

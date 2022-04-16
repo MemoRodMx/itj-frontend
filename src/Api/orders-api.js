@@ -2,7 +2,7 @@ const { REACT_APP_BACKEND_URI } = process.env;
 
 const createOrder = async (body) => {
   try {
-    const response = await fetch(REACT_APP_BACKEND_URI + "/orders", {
+    const response = await fetch(REACT_APP_BACKEND_URI + "orders", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

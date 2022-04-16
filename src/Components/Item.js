@@ -11,7 +11,7 @@ const Item = ({ data, className }) => {
         <Card.Text>
           <small>{data.description}</small>
         </Card.Text>
-        <Card.Text>
+        <Card.Text as="div">
           ${data?.price}
           <BuyButton className="ms-3" size="sm" item={data} />
         </Card.Text>
