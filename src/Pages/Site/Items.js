@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Item from "../../Components/Item";
-import ItemsService from "../../Api/items-api";
+import itemsApi from "../../Api/items-api";
 
 const Items = () => {
   const [itemsList, setItemsList] = useState([]);
 
   useEffect(() => {
-    ItemsService.readItems().then((data) => {
+    itemsApi.readItems().then((data) => {
       setItemsList(data);
     });
   }, []);

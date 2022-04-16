@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Image } from "react-bootstrap";
+import { Table, Button, Image, Modal } from "react-bootstrap";
 import { Pencil, Trash } from "react-bootstrap-icons";
 import { LinkContainer } from "react-router-bootstrap";
 
@@ -9,6 +9,23 @@ const { REACT_APP_NO_IMAGE } = process.env;
 
 const Items = () => {
   const [itemsList, setItemsList] = useState([]);
+  const [currentItem, setCurrentItem] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const modalTitle = "Confirm...";
+  const modalContent = "Do you want to remove this item from the database";
+
+  const handleModalOk = () => {
+    itemsApi.removeItem(currentItem._id).then((data) => {
+      const itemIndex = itemsList.findIndex((el) => el._id === currentItem._id);
+      itemsList.splice(itemIndex, 1);
+      setItemsList([...itemsList]);
+    });
+    setShowModal(false);
+  };
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
 
   useEffect(() => {
     itemsApi.readItems().then((data) => {
@@ -65,9 +82,13 @@ const Items = () => {
                   </LinkContainer>
 
                   <Button
-                    variant="outline-danger"
-                    size="sm"
                     title="Delete item"
+                    variant="danger"
+                    size="sm"
+                    onClick={() => {
+                      setCurrentItem(item);
+                      setShowModal(true);
+                    }}
                   >
                     <Trash />
                   </Button>
@@ -76,11 +97,26 @@ const Items = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="4">No items found</td>
+              <td colSpan="6">No items found</td>
             </tr>
           )}
         </tbody>
       </Table>
+
+      <Modal show={showModal} onHide={handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{modalTitle}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalContent}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleModalOk}>
+            Ok
+          </Button>
+          <Button variant="danger" onClick={handleModalClose}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

@@ -2,26 +2,52 @@ import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { SendPlus, X } from "react-bootstrap-icons";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import itemsApi from "../../Api/items-api";
 
 const ItemsForm = () => {
   let { itemId } = useParams();
   const title = itemId ? "Edit item" : "Add item";
-
   const [item, setItem] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
-    itemsApi.readItems(itemId).then((data) => {
-      setItem(data);
-    });
+    if (itemId)
+      itemsApi.readItems(itemId).then((data) => {
+        console.log(data);
+        setItem(data);
+      });
   }, [itemId]);
 
   const setValue = (prop, value) => {
     const current = { ...item };
     current[prop] = value;
     setItem(current);
+  };
+
+  const save = () => {
+    if (item._id) {
+      item.price = parseFloat(item.price);
+      itemsApi
+        .updateItem(item._id, item)
+        .then((data) => {
+          navigate("/admin", { replace: true });
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+    } else {
+      item.price = parseFloat(item.price);
+      itemsApi
+        .createItem(item)
+        .then((data) => {
+          navigate("/admin", { replace: true });
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+    }
   };
 
   return (
@@ -70,7 +96,12 @@ const ItemsForm = () => {
         </Form.Group>
 
         <Form.Group className="mb-5">
-          <Button variant="primary" type="submit" className="me-2">
+          <Button
+            variant="primary"
+            type="button"
+            className="me-2"
+            onClick={save}
+          >
             <SendPlus className="me-1" />
             Save
           </Button>

@@ -1,22 +1,41 @@
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import { Trash } from "react-bootstrap-icons";
-import { useState } from "react";
-import Bootbox from "bootbox-react";
-
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
-import { removeFromCart } from "../../redux/Cart/cart-actions";
+import {
+  removeFromCart,
+  clearAllFromCart,
+} from "../../redux/Cart/cart-actions";
+import ordersApi from "../../Api/orders-api";
 
-const Checkout = ({ items, removeFromCart }) => {
-  const [showConfirmRemove, setShowConfirmRemove] = useState(false);
+const Checkout = ({ items, removeFromCart, clearAllFromCart }) => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
   const [currentItem, setCurrentItem] = useState(false);
+  const [modalContent, setModalContent] = useState(false);
+  const [modalTitle, setModalTitle] = useState(false);
+  const [modalVariant, setModalVariant] = useState(false);
+  const [order, setOrder] = useState({
+    name: "",
+    address: "",
+  });
+  const [canSave, setCanSave] = useState(false);
 
-  const handleYes = () => {
-    removeFromCart(currentItem._id);
-    setShowConfirmRemove(false);
+  useEffect(() => {
+    items?.length ? setCanSave(false) : setCanSave(true);
+  }, [items]);
+
+  const setValue = (prop, value) => {
+    let o = { ...order };
+    o[prop] = value;
+    setOrder(o);
   };
-  const handleNo = () => {
-    setShowConfirmRemove(false);
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setModalVariant(false);
   };
 
   const total = items?.length
@@ -25,6 +44,38 @@ const Checkout = ({ items, removeFromCart }) => {
         0
       )
     : 0;
+
+  const handleModalOk = () => {
+    if (modalVariant === "remove") {
+      removeFromCart(currentItem._id);
+    } else {
+      setCanSave(false);
+    }
+    setShowModal(false);
+  };
+
+  const saveOrder = () => {
+    setCanSave(false);
+
+    if (order.name.trim() !== "" && order.address.trim() !== "") {
+      ordersApi
+        .createOrder({ ...order, items })
+        .then((data) => {
+          clearAllFromCart();
+          navigate("/", { replace: true });
+        })
+        .catch((err) => {
+          console.log(err);
+          setCanSave(true);
+        });
+    } else {
+      setModalVariant(false);
+      setModalTitle("Oops!");
+      setModalContent("Please enter your name and address.");
+      setShowModal(true);
+      setCanSave(true);
+    }
+  };
 
   return (
     <div className="row">
@@ -60,8 +111,11 @@ const Checkout = ({ items, removeFromCart }) => {
                         variant="danger"
                         size="sm"
                         onClick={() => {
+                          setModalVariant("remove");
                           setCurrentItem(item);
-                          setShowConfirmRemove(true);
+                          setModalTitle("Question...");
+                          setModalContent("Do you want to remove this item?");
+                          setShowModal(true);
                         }}
                       >
                         <Trash />
@@ -93,14 +147,63 @@ const Checkout = ({ items, removeFromCart }) => {
             </tfoot>
           </table>
 
-          <Bootbox
-            show={showConfirmRemove}
-            type={"confirm"}
-            message={"Do you want to remove this item from your shopping cart?"}
-            onSuccess={handleYes}
-            onCancel={handleNo}
-            onClose={handleNo}
-          />
+          <h4 className="mt-5 mb-3">Please enter your name and address</h4>
+
+          <Form>
+            <Form.Group className="mb-3" controlId="name">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Name"
+                defaultValue={order?.name}
+                onChange={(event) => setValue("name", event.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Address"
+                defaultValue={order?.address}
+                onChange={(event) => setValue("address", event.target.value)}
+              />
+            </Form.Group>
+
+            <div className="text-center mt-5 mb-5">
+              <Button
+                size="xs"
+                type="button"
+                onClick={() => {
+                  saveOrder();
+                }}
+                disabled={canSave}
+              >
+                Save order
+              </Button>
+            </div>
+          </Form>
+
+          <Modal show={showModal} onHide={handleModalClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>{modalTitle}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{modalContent}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={handleModalOk}>
+                Ok
+              </Button>
+              <Button
+                style={{
+                  display: modalVariant === "remove" ? "inline-block" : "none",
+                }}
+                variant="danger"
+                onClick={handleModalClose}
+              >
+                Cancel
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </div>
     </div>
@@ -114,7 +217,12 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return { removeFromCart: (item_id) => dispatch(removeFromCart(item_id)) };
+  return {
+    removeFromCart: (item_id) => dispatch(removeFromCart(item_id)),
+    clearAllFromCart: () => {
+      dispatch(clearAllFromCart());
+    },
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
