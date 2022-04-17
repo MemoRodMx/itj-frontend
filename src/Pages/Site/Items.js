@@ -16,7 +16,7 @@ const Items = () => {
       <div className="row">
         {itemsList.length
           ? itemsList?.map((item, index) => (
-              <div className="col-md-4" key={index}>
+              <div className="col-md-3 col-sm-12" key={index}>
                 <Item data={item} className="mb-3" />
               </div>
             ))
