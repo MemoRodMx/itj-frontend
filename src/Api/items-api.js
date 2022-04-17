@@ -53,7 +53,7 @@ const updateItem = async (_id, body) => {
 
 const removeItem = async (_id) => {
   try {
-    const response = await fetch(REACT_APP_BACKEND_URI + `items/${_id}}`, {
+    const response = await fetch(REACT_APP_BACKEND_URI + `items/${_id}`, {
       method: "DELETE",
     });
 
