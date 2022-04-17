@@ -8,6 +8,7 @@ import NavBar from "./Components/NavBar";
 import { Container } from "react-bootstrap";
 
 function App() {
+  console.log("1.0.0");
   return (
     <Container fluid className="App ps-0 pe-0">
       <NavBar />
