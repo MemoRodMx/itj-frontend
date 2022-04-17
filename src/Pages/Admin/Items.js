@@ -37,7 +37,7 @@ const Items = () => {
     <div>
       <h3>
         Items &nbsp;
-        <LinkContainer to="/adminitems/form">
+        <LinkContainer to="/admin/items/form">
           <Button size="sm" variant="primary">
             Add item
           </Button>
@@ -72,7 +72,7 @@ const Items = () => {
                 <td>{item.price}</td>
                 <td>
                   <LinkContainer
-                    to={`/adminitems/form/${item._id}`}
+                    to={`/admin/items/form/${item._id}`}
                     title="Edit item"
                     className="me-1"
                   >
