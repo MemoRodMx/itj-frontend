@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Form, Button, Modal, Toast } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import { Trash } from "react-bootstrap-icons";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,6 @@ import {
 import ordersApi from "../../Api/orders-api";
 
 const Checkout = ({ items, removeFromCart, clearAllFromCart }) => {
-  const [show, setShow] = useState(true);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [currentItem, setCurrentItem] = useState(false);
