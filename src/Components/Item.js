@@ -8,7 +8,7 @@ const Item = ({ data, className }) => {
       <Card.Img src={data?.image_url ? data?.image_url : REACT_APP_NO_IMAGE} />
       <Card.Body>
         <Card.Title>{data?.name}</Card.Title>
-        <Card.Text>
+        <Card.Text className="item-description">
           <small>{data.description}</small>
         </Card.Text>
         <Card.Text as="div">

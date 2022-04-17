@@ -35,7 +35,9 @@ $blue-lighten: #336;
 
 
 .card-img{
-    max-height: 200px;
+    max-height: 150px;
+    max-width: 200px;
+    margin: 0px auto;
 }
 
 .toast{
@@ -43,6 +45,14 @@ $blue-lighten: #336;
     margin-left: auto;
     position:absolute;
     z-index:400;
+  }
+
+  .item-description{
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   
   }
 
 footer{
