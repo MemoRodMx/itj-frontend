@@ -17,7 +17,7 @@ const Items = () => {
 
   const handleModalOk = () => {
     itemsApi.removeItem(currentItem._id).then((data) => {
-      const itemIndex = itemsList.findIndex((el) => el._id === currentItem._id);
+      const itemIndex = itemsList.findIndex((el) => el._id === data._id);
       itemsList.splice(itemIndex, 1);
       setItemsList([...itemsList]);
     });
